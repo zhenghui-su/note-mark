@@ -1,3 +1,5 @@
 export * from './AppLayout'
-export * from './DraggableTopBar'
 export * from './Button'
+export * from './DraggableTopBar'
+export * from './NotePreview'
+export * from './NotePreviewList'

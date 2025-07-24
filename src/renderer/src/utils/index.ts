@@ -1,5 +1,15 @@
 import clsx, { ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+
+// 扩展Window接口
+declare global {
+  interface Window {
+    context: {
+      locale: string
+      timeZone: string
+    }
+  }
+}
 /**
  * 合并并处理CSS类名的工具函数
  *
@@ -11,3 +21,11 @@ export const cn = (...args: ClassValue[]): string => {
   // 然后使用twMerge对类名进行合并和优化处理
   return twMerge(clsx(...args))
 }
+
+const dateFormatter = new Intl.DateTimeFormat(window.context.locale, {
+  dateStyle: 'short',
+  timeStyle: 'short',
+  timeZone: window.context.timeZone
+})
+
+export const formatDateFromMs = (ms: number) => dateFormatter.format(ms)
