@@ -1,11 +1,10 @@
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, BrowserWindowConstructorOptions, ipcMain, shell } from 'electron'
 import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow(): void {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  const options: BrowserWindowConstructorOptions = {
     width: 900,
     height: 670,
     show: false,
@@ -13,17 +12,24 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     center: true,
     title: 'NoteMark', // 程序名字
-    frame: false, // 禁用框架
-    vibrancy: 'under-window', // 模糊
-    visualEffectState: 'active', // 视觉状态为活跃
-    titleBarStyle: 'hidden', // 隐藏标题栏
-    trafficLightPosition: { x: 15, y: 10 },
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
       contextIsolation: true
     }
-  })
+  }
+  // macOS 特定设置
+  if (process.platform === 'darwin') {
+    Object.assign(options, {
+      frame: false, // 禁用框架
+      vibrancy: 'under-window', // 模糊
+      visualEffectState: 'active', // 视觉状态为活跃
+      titleBarStyle: 'hidden', // 隐藏标题栏
+      trafficLightPosition: { x: 15, y: 10 } // 位置
+    })
+  }
+  // Create the browser window.
+  const mainWindow = new BrowserWindow(options)
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
