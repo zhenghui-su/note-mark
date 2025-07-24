@@ -11,6 +11,13 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
+    center: true,
+    title: 'NoteMark', // 程序名字
+    frame: false, // 禁用框架
+    vibrancy: 'under-window', // 模糊
+    visualEffectState: 'active', // 视觉状态为活跃
+    titleBarStyle: 'hidden', // 隐藏标题栏
+    trafficLightPosition: { x: 15, y: 10 },
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,

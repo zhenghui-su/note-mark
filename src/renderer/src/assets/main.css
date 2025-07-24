@@ -16,4 +16,12 @@
 
     @apply overflow-hidden;
   }
+  /* 使标题栏允许拖动 */
+  header {
+    -webkit-app-region: drag;
+  }
+  /* 使三个功能按钮不允许拖动 */
+  button {
+    -webkit-app-region: no-drag;
+  }
 }
