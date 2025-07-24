@@ -4,6 +4,7 @@
   #root {
     @apply h-full;
   }
+
   html,
   body {
     @apply h-full;
@@ -16,12 +17,24 @@
 
     @apply overflow-hidden;
   }
-  /* 使标题栏允许拖动 */
+
   header {
     -webkit-app-region: drag;
   }
-  /* 使三个功能按钮不允许拖动 */
+
   button {
     -webkit-app-region: no-drag;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#555] rounded-md;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
   }
 }
