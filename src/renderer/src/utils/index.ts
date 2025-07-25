@@ -1,4 +1,4 @@
-import { CreateNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
+import { CreateNote, DeleteNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
 import clsx, { ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -12,6 +12,7 @@ declare global {
       readNote: ReadNote
       writeNote: WriteNote
       createNote: CreateNote
+      deleteNote: DeleteNote
     }
   }
 }
