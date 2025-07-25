@@ -1,7 +1,7 @@
 {
-  "name": "note-mark",
+  "name": "notemark",
   "version": "1.0.0",
-  "description": "一个基于 Electron + React + TypeScript 构建的现代化笔记应用",
+  "description": "NoteMark - 一个基于 Electron + React + TypeScript 构建的现代化笔记应用",
   "main": "./out/main/index.js",
   "author": "suzhenghui",
   "homepage": "https://github.com/zhenghui-su/note-mark",

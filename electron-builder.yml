@@ -1,7 +1,8 @@
-appId: com.electron.app
-productName: note-mark
+appId: com.notemark.app
+productName: NoteMark
 directories:
   buildResources: build
+  output: dist
 files:
   - '!**/.vscode/*'
   - '!src/*'
@@ -12,13 +13,17 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: note-mark
+  executableName: NoteMark
+  icon: build/icon.ico
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
+  artifactName: NoteMark-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
 mac:
+  icon: build/icon.icns
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
@@ -27,7 +32,7 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: NoteMark-${version}.${ext}
 linux:
   target:
     - AppImage
@@ -36,7 +41,7 @@ linux:
   maintainer: electronjs.org
   category: Utility
 appImage:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: NoteMark-${version}.${ext}
 npmRebuild: false
 publish:
   provider: generic
