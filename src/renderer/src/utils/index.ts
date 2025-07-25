@@ -1,3 +1,4 @@
+import { GetNotes, ReadNote } from '@shared/types'
 import clsx, { ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -7,6 +8,8 @@ declare global {
     context: {
       locale: string
       timeZone: string
+      getNotes: GetNotes
+      readNote: ReadNote
     }
   }
 }
