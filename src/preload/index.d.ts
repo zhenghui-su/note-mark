@@ -7,6 +7,7 @@ declare global {
       timeZone: string
       getNotes: GetNotes
       readNote: ReadNote
+      writeNote: WriteNote
     }
   }
 }
