@@ -1,8 +1,10 @@
 import { appDirectoryName, fileEncoding } from '@shared/constants'
 import { NoteInfo } from '@shared/models'
-import { GetNotes, ReadNote, WriteNote } from '@shared/types'
+import { CreateNote, GetNotes, ReadNote, WriteNote } from '@shared/types'
+import { dialog } from 'electron'
 import { ensureDir, readdir, readFile, stat, writeFile } from 'fs-extra'
 import { homedir } from 'os'
+import path from 'path'
 
 /**
  * 获取应用程序的根目录路径
@@ -56,4 +58,38 @@ export const writeNote: WriteNote = async (filename: string, content: string) =>
   const rootDir = getRootDir()
 
   return writeFile(`${rootDir}/${filename}.md`, content, { encoding: fileEncoding })
+}
+
+export const createNote: CreateNote = async () => {
+  const rootDir = getRootDir()
+
+  await ensureDir(rootDir)
+
+  const { filePath, canceled } = await dialog.showSaveDialog({
+    title: 'New note',
+    defaultPath: `${rootDir}/Untitled.md`,
+    buttonLabel: '新建',
+    showsTagField: false,
+    properties: ['showOverwriteConfirmation'], // 提示覆盖
+    filters: [{ name: 'Markdown', extensions: ['md'] }]
+  })
+  if (canceled || !filePath) {
+    return false
+  }
+
+  const { name: filename, dir: parentDir } = path.parse(filePath)
+
+  if (parentDir !== rootDir) {
+    await dialog.showMessageBox({
+      type: 'error',
+      title: 'Creation failed',
+      message: `All notes must be saved under ${rootDir}.
+      Avoid using other drrectories!`
+    })
+    return false
+  }
+
+  await writeFile(filePath, '')
+
+  return filename
 }
