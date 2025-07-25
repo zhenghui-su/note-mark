@@ -8,22 +8,21 @@ import {
   quotePlugin,
   thematicBreakPlugin
 } from '@mdxeditor/editor'
-
-// import { useMarkdownEditor } from '@renderer/hooks/useMarkdownEditor'
+import { useMarkdownEditor } from '@renderer/hooks/useMarkdownEditor'
 
 export const MarkdownEditor = () => {
-  // const { editorRef, selectedNote, handleAutoSaving, handleBlur } = useMarkdownEditor()
+  const { selectedNote } = useMarkdownEditor()
 
-  // if (!selectedNote) return null
+  if (!selectedNote) return null
 
   return (
     <MDXEditor
       // ref={editorRef}
-      // key={selectedNote.title}
+      key={selectedNote.title}
       // markdown={selectedNote.content}
       // onChange={handleAutoSaving}
       // onBlur={handleBlur}
-      markdown={''}
+      markdown={selectedNote.content}
       plugins={[
         headingsPlugin(),
         listsPlugin(),
