@@ -11,7 +11,7 @@ export const NewNoteButton = ({ ...props }: ActionButtonProps) => {
   }
   return (
     <ActionButton onClick={handleCreation} {...props}>
-      <LuSignature className="w-4 h-4 text-zinc-300" />
+      <LuSignature className="w-4 h-4 text-gray-600 dark:text-zinc-300" />
     </ActionButton>
   )
 }

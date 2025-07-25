@@ -100,3 +100,100 @@ export const deleteNoteAtom = atom(null, async (get, set) => {
 
   set(selectedNoteIndexAtom, null)
 })
+
+// 主题管理
+export type Theme = 'light' | 'dark' | 'system'
+
+// 获取系统主题偏好
+const getSystemTheme = (): 'light' | 'dark' => {
+  if (typeof window === 'undefined') return 'dark'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+// 获取实际应用的主题（处理system模式）
+const getAppliedTheme = (theme: Theme): 'light' | 'dark' => {
+  if (theme === 'system') {
+    return getSystemTheme()
+  }
+  return theme
+}
+
+const getInitialTheme = (): Theme => {
+  // 在服务端渲染环境中，localStorage可能不存在
+  if (typeof window === 'undefined') return 'system'
+
+  const saved = localStorage.getItem('notemark-theme')
+  if (saved === 'light' || saved === 'dark' || saved === 'system') return saved
+  return 'system' // 默认跟随系统主题
+}
+
+// 应用主题到DOM
+const applyTheme = (theme: 'light' | 'dark') => {
+  if (typeof window === 'undefined') return
+
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+}
+
+// 初始化主题atom
+const initialTheme = getInitialTheme()
+export const themeAtom = atom<Theme>(initialTheme)
+
+// 计算实际应用的主题
+export const appliedThemeAtom = atom<'light' | 'dark'>((get) => {
+  const theme = get(themeAtom)
+  return getAppliedTheme(theme)
+})
+
+// 初始化时设置HTML类
+if (typeof window !== 'undefined') {
+  const appliedTheme = getAppliedTheme(initialTheme)
+  applyTheme(appliedTheme)
+
+  // 监听系统主题变化
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  const handleSystemThemeChange = () => {
+    // 只有在system模式下才响应系统主题变化
+    const currentTheme = localStorage.getItem('notemark-theme')
+    if (currentTheme === 'system' || !currentTheme) {
+      const newSystemTheme = getSystemTheme()
+      applyTheme(newSystemTheme)
+    }
+  }
+
+  mediaQuery.addEventListener('change', handleSystemThemeChange)
+}
+
+export const toggleThemeAtom = atom(null, (get, set) => {
+  const currentTheme = get(themeAtom)
+  let newTheme: Theme
+
+  // 循环切换：system -> light -> dark -> system
+  switch (currentTheme) {
+    case 'system':
+      newTheme = 'light'
+      break
+    case 'light':
+      newTheme = 'dark'
+      break
+    case 'dark':
+      newTheme = 'system'
+      break
+    default:
+      newTheme = 'system'
+  }
+
+  set(themeAtom, newTheme)
+
+  // 确保localStorage存在
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('notemark-theme', newTheme)
+
+    // 应用新主题
+    const appliedTheme = getAppliedTheme(newTheme)
+    applyTheme(appliedTheme)
+  }
+})

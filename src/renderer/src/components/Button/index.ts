@@ -1,4 +1,5 @@
 export * from './ActionButton'
-export * from './NewNoteButton'
-export * from './DeleteNoteButton'
 export * from './ActionButtonsRow'
+export * from './DeleteNoteButton'
+export * from './NewNoteButton'
+export * from './ThemeToggleButton'
